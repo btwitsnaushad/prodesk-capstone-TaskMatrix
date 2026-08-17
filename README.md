@@ -1,2 +1,302 @@
-# prodesk-capstone-TaskMatrix
-A full-stack Agile project management platform for software teams to manage projects, tasks, deadlines, priorities, and team collaboration.
+# TaskMatrix
+
+> A full-stack Agile project management platform designed for software teams to manage projects, tasks, deadlines, priorities, and team collaboration.
+
+## Project Overview
+
+TaskMatrix is a Jira/Asana-inspired project management platform for software development teams. It provides a centralized workspace where teams can create projects, manage tasks, assign responsibilities, track deadlines, and monitor project activity through a Kanban-based workflow.
+
+The application is designed as a scalable full-stack solution with a React frontend, Express.js backend, and MongoDB database.
+
+## Designated Track
+
+**Fullstack Developer**
+
+## Project Objective
+
+The primary objective of TaskMatrix is to provide software teams with a simple and centralized platform for managing Agile workflows.
+
+The system will focus on:
+
+* Project management
+* Task management
+* Team collaboration
+* Task assignment
+* Priority and deadline tracking
+* Kanban workflow management
+* Role-based access control
+* Project activity tracking
+
+## Tech Stack
+
+### Frontend
+
+* React.js
+* Vite
+* Tailwind CSS
+* Shadcn UI
+* React Router
+* Zustand
+
+### Backend
+
+* Node.js
+* Express.js
+* REST API
+* JWT Authentication
+
+### Database
+
+* MongoDB
+* Mongoose
+
+### Development & Design Tools
+
+* Git
+* GitHub
+* Postman
+* Figma
+* Draw.io / dbdiagram.io
+
+### Deployment
+
+* Vercel
+* Render
+* MongoDB Atlas
+
+## User Roles
+
+### Admin
+
+* Manage users
+* Manage projects
+* Manage user roles
+* Delete projects
+* Monitor system activity
+
+### Manager
+
+* Create and manage projects
+* Add team members
+* Create and assign tasks
+* Manage task priorities and deadlines
+* Monitor project progress
+
+### Member
+
+* View assigned projects
+* View and update assigned tasks
+* Change task status
+* Add comments
+* Track personal tasks
+
+## Core Features
+
+### P0 — Must Have
+
+#### Authentication
+
+* User registration
+* User login
+* JWT-based authentication
+* Protected routes
+* Logout
+
+#### Project Management
+
+* Create project
+* View projects
+* Update project
+* Delete project
+* Add and manage team members
+
+#### Task Management
+
+* Create tasks
+* Edit tasks
+* Delete tasks
+* Assign tasks to team members
+* Set task priority
+* Set task deadline
+* Update task status
+
+#### Kanban Board
+
+* To Do
+* In Progress
+* Review
+* Done
+* Drag-and-drop task management
+
+### P1 — Important Features
+
+* Task search
+* Task filtering
+* Task sorting
+* Task comments
+* Project activity feed
+* Dashboard statistics
+* Team management
+
+### P2 — Future Features
+
+* Real-time task updates
+* Notifications
+* AI-powered project assistance
+* Advanced analytics
+* Payment integration
+
+## Database Collections
+
+The application will use the following MongoDB collections:
+
+* Users
+* Projects
+* Tasks
+* Comments
+* Activities
+
+Relationships between these collections will be documented through the Entity Relationship Diagram (ERD).
+
+## Planned API Architecture
+
+### Authentication
+
+* `POST /api/auth/register`
+* `POST /api/auth/login`
+* `GET /api/auth/me`
+
+### Users
+
+* `GET /api/users`
+* `GET /api/users/:id`
+* `PUT /api/users/:id`
+* `DELETE /api/users/:id`
+
+### Projects
+
+* `GET /api/projects`
+* `POST /api/projects`
+* `GET /api/projects/:id`
+* `PUT /api/projects/:id`
+* `DELETE /api/projects/:id`
+
+### Tasks
+
+* `GET /api/projects/:projectId/tasks`
+* `POST /api/projects/:projectId/tasks`
+* `GET /api/tasks/:id`
+* `PUT /api/tasks/:id`
+* `DELETE /api/tasks/:id`
+
+### Comments
+
+* `GET /api/tasks/:taskId/comments`
+* `POST /api/tasks/:taskId/comments`
+
+### Activities
+
+* `GET /api/projects/:projectId/activities`
+
+## UI/UX Design
+
+The TaskMatrix interface will be designed using Figma with responsive layouts for desktop and mobile devices.
+
+Planned core screens:
+
+1. Authentication Screen
+2. Main Dashboard
+3. Project Kanban Board
+4. Task Details View
+5. Team Management View
+
+**Figma Design:** Coming Soon
+
+## System Architecture
+
+TaskMatrix will follow a client-server architecture:
+
+```text
+React + Vite
+     |
+     | REST API
+     ↓
+Express.js + Node.js
+     |
+     ↓
+MongoDB + Mongoose
+```
+
+JWT authentication will be used to secure protected API routes and role-based access control will determine which actions each user role can perform.
+
+## Database Design
+
+The database architecture will contain five primary collections:
+
+```text
+Users
+Projects
+Tasks
+Comments
+Activities
+```
+
+The detailed relationships and fields will be documented in the project's ERD.
+
+## Project Roadmap
+
+### Sprint 13 — Planning & Architecture
+
+* Product Requirements Document
+* UI/UX wireframes
+* Database ERD
+* System architecture
+* API planning
+* Prompt engineering documentation
+
+### Sprint 14 — MVP Development
+
+* Frontend setup
+* Backend setup
+* Database integration
+* Authentication
+* Project management
+* Basic task management
+* Kanban board
+
+### Sprint 15 — Full Feature Completion
+
+* Complete CRUD operations
+* Role-based access control
+* Comments
+* Activity feed
+* Search and filtering
+* Team management
+
+### Sprint 16 — AI Integration & UX Polish
+
+* AI-powered functionality
+* UX improvements
+* Performance improvements
+* Additional collaboration features
+
+### Sprint 17 — Deployment & Go-Live
+
+* Testing
+* CI/CD
+* Production deployment
+* Final optimization
+* Final demonstration
+
+## Documentation
+
+* [Product Requirements Document](README.md)
+* [AI Prompt Engineering Log](Prompts.md)
+* ERD — Coming Soon
+* System Architecture — Coming Soon
+
+## Project Status
+
+**Current Phase:** Sprint 13 — Planning & Architecture
+
+**Development Status:** Blueprint / Planning Phase
