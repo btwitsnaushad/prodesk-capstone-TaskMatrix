@@ -217,6 +217,10 @@ Core UI/UX screens:
 
 ## System Architecture
 
+### Architecture Diagram
+
+![TaskMatrix System Architecture](TaskMatrix-Architecture.png)
+
 TaskMatrix will follow a client-server architecture:
 
 ```text
@@ -237,6 +241,10 @@ Users / Projects / Tasks / Comments / Activities
 JWT authentication will be used to secure protected API routes and role-based access control will determine which actions each user role can perform.
 
 ## Database Design
+
+### Entity Relationship Diagram
+
+![TaskMatrix ERD](TaskMatrix-ERD.png%20(2).png)
 
 The database architecture will contain five primary collections:
 
