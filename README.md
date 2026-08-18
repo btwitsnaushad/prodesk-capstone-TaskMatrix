@@ -244,7 +244,7 @@ JWT authentication will be used to secure protected API routes and role-based ac
 
 ### Entity Relationship Diagram
 
-![TaskMatrix ERD](TaskMatrix-ERD.png%20(2).png)
+![TaskMatrix ERD](TaskMatrix-ERD.png%20.png)
 
 The database architecture will contain five primary collections:
 
