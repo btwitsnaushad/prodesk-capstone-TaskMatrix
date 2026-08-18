@@ -144,7 +144,6 @@ The system will focus on:
 * Notifications
 * AI-powered project assistance
 * Advanced analytics
-* Payment integration
 
 ## Database Collections
 
@@ -202,29 +201,37 @@ Relationships between these collections will be documented through the Entity Re
 
 The TaskMatrix interface will be designed using Figma with responsive layouts for desktop and mobile devices.
 
-Planned core screens:
+Core UI/UX screens:
 
-1. Authentication Screen
-2. Main Dashboard
-3. Project Kanban Board
-4. Task Details View
-5. Team Management View
+### Desktop
+1. Login
+2. Dashboard
+3. Kanban Board
 
-**Figma Design:** Coming Soon
+### Mobile
+1. Mobile Login
+2. Mobile Dashboard
+3. Mobile Kanban Board
+   
+**Figma Design:** TaskMatrix UI/UX Design https://www.figma.com/design/6GIvTyNg9kbxWm90EdLDr3/TaskMatrix-UI-UX-Design?node-id=0-1&t=V909lnRUAxJcbzSV-1
 
 ## System Architecture
 
 TaskMatrix will follow a client-server architecture:
 
 ```text
+User
+  ↓
+TaskMatrix Frontend
 React + Vite
-     |
-     | REST API
-     ↓
-Express.js + Node.js
-     |
-     ↓
-MongoDB + Mongoose
+  ↓
+Express.js REST API
+  ↓
+Business Logic
+Controllers / Services
+  ↓
+MongoDB
+Users / Projects / Tasks / Comments / Activities
 ```
 
 JWT authentication will be used to secure protected API routes and role-based access control will determine which actions each user role can perform.
@@ -292,8 +299,8 @@ The detailed relationships and fields will be documented in the project's ERD.
 
 * [Product Requirements Document](README.md)
 * [AI Prompt Engineering Log](Prompts.md)
-* ERD — Coming Soon
-* System Architecture — Coming Soon
+* Database ERD — dbdiagram.io
+* System Architecture — Draw.io
 
 ## Project Status
 
