@@ -118,6 +118,7 @@ The system will focus on:
 * Assign tasks to team members
 * Set task priority
 * Set task deadline
+* Automated deadline tracking using scheduled jobs (cron)
 * Update task status
 
 #### Kanban Board
@@ -134,7 +135,7 @@ The system will focus on:
 * Task filtering
 * Task sorting
 * Task comments
-* Project activity feed
+* Real-time project activity feed
 * Dashboard statistics
 * Team management
 
