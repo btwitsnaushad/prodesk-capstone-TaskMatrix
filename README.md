@@ -118,7 +118,7 @@ The system will focus on:
 * Assign tasks to team members
 * Set task priority
 * Set task deadline
-* Automated deadline tracking using scheduled jobs 
+* Automated deadline tracking using cron jobs
 * Update task status
 
 #### Kanban Board
@@ -306,11 +306,11 @@ The detailed relationships and fields will be documented in the project's ERD.
 
 ## Documentation
 
-* [Product Requirements Document](README.md)
-* [AI Prompt Engineering Log](Prompts.md)
-* Database ERD — dbdiagram.io
-* System Architecture — Draw.io
-
+* Product Requirements Document — README.md
+* AI Prompt Engineering Log — Prompts.md
+* Database ERD — TaskMatrix-ERD.png
+* System Architecture — TaskMatrix-Architecture.png
+  
 ## Project Status
 
 **Current Phase:** Sprint 13 — Planning & Architecture
