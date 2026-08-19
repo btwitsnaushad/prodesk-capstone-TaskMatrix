@@ -118,7 +118,7 @@ The system will focus on:
 * Assign tasks to team members
 * Set task priority
 * Set task deadline
-* Automated deadline tracking using scheduled jobs (cron)
+* Automated deadline tracking using scheduled jobs 
 * Update task status
 
 #### Kanban Board
