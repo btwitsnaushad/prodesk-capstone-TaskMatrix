@@ -8,6 +8,9 @@ const app = express();
 app.use(cors());
 app.use(express.json()); 
 
+// Registering our API routes
+app.use('/api/auth', require('./routes/auth'));
+
 mongoose.connect(process.env.MONGO_URI, {
   serverSelectionTimeoutMS: 5000, 
   family: 4 

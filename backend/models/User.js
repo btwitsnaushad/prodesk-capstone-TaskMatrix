@@ -1,18 +1,29 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
 
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
-}, { timestamps: true });
-
-// Password hash karne ka logic
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-});
+// Defining the blueprint for our application's users
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, 'Name is required to create an account'],
+      trim: true, // Automatically removes accidental spaces before or after the name
+    },
+    email: {
+      type: String,
+      required: [true, 'Email address is required'],
+      unique: true, // Prevents multiple accounts with the same email
+      lowercase: true, // Converts email to lowercase to avoid case-sensitive duplicate bugs
+    },
+    password: {
+      type: String,
+      required: [true, 'Password is required for security'],
+      minlength: [6, 'Password must be at least 6 characters long'], 
+    }
+  },
+  {
+    // Mongoose will automatically manage 'createdAt' and 'updatedAt' fields for us
+    timestamps: true 
+  }
+);
 
 module.exports = mongoose.model('User', userSchema);
