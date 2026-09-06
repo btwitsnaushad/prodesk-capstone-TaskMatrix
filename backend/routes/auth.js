@@ -11,11 +11,12 @@ const router = express.Router();
 // ==========================================
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    // FIX: Added 'username' to the destructured variables to receive it from the frontend payload
+    const { name, username, email, password } = req.body;
 
     // Step 1: Basic validation. We shouldn't bother the database if the user forgot a field.
-    if (!name || !email || !password) {
-      return res.status(400).json({ error: 'Please provide all required fields (name, email, password).' });
+    if (!name || !username || !email || !password) {
+      return res.status(400).json({ error: 'Please provide all required fields (name, username, email, password).' });
     }
 
     // Step 2: Check for existing users. Nobody likes duplicate account bugs.
@@ -31,6 +32,7 @@ router.post('/register', async (req, res) => {
     // Step 4: Build the user profile and save it to MongoDB.
     const newUser = new User({
       name,
+      username, // FIX: Passed the username to the database model to satisfy the unique index requirement
       email,
       password: hashedPassword,
     });
@@ -50,6 +52,7 @@ router.post('/register', async (req, res) => {
       user: {
         id: newUser._id,
         name: newUser.name,
+        username: newUser.username,
         email: newUser.email,
       },
     });
