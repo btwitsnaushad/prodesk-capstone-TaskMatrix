@@ -31,6 +31,9 @@ const Login = () => {
       // This token will be attached to future requests to prove the user is logged in
       localStorage.setItem('token', response.data.token);
       
+      // NEW: Save the user's name so we can greet them on the dashboard
+      localStorage.setItem('userName', response.data.user.name);
+      
       // Route the authenticated user to their main workspace
       navigate('/dashboard');
       
