@@ -41,8 +41,8 @@ const Register = () => {
         password: formData.password
       };
 
-      // Transmit the mapped payload to the authentication endpoint
-      const response = await axios.post('http://localhost:5000/api/auth/register', apiPayload);
+      // NEW URL: Transmit the mapped payload to the live Render authentication endpoint
+      const response = await axios.post('https://prodesk-capstone-taskmatrix-23ts.onrender.com/api/auth/register', apiPayload);
       
       console.log("Registration successful:", response.data);
       

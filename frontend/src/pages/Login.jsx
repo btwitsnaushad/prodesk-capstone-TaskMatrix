@@ -19,8 +19,8 @@ const Login = () => {
     setServerError(''); // Clear any previous error messages on a fresh attempt
 
     try {
-      // Transmit credentials to the backend for verification
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      // NEW URL: The request is now routed to the live Render server instead of localhost
+      const response = await axios.post('https://prodesk-capstone-taskmatrix-23ts.onrender.com/api/auth/login', {
         email,
         password
       });
@@ -31,7 +31,7 @@ const Login = () => {
       // This token will be attached to future requests to prove the user is logged in
       localStorage.setItem('token', response.data.token);
       
-      // NEW: Save the user's name so we can greet them on the dashboard
+      // Save the user's name so we can greet them on the dashboard
       localStorage.setItem('userName', response.data.user.name);
       
       // Route the authenticated user to their main workspace
