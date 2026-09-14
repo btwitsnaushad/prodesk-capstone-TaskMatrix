@@ -270,15 +270,21 @@ The detailed relationships and fields will be documented in the project's ERD.
 * API planning
 * Prompt engineering documentation
 
-### Sprint 14 — MVP Development
+### Sprint 14 — Authentication & Routing
 
-* Frontend setup
-* Backend setup
-* Database integration
-* Authentication
-* Project management
-* Basic task management
-* Kanban board
+- Frontend authentication setup
+- Backend authentication setup
+- MongoDB User model
+- Password hashing using bcryptjs
+- JWT authentication
+- Login and registration APIs
+- Protected dashboard route
+- JWT verification middleware
+- Protected task API
+- Logout functionality
+- Authentication testing
+- Frontend deployment on Vercel
+- Backend deployment on Render
 
 ### Sprint 15 — Full Feature Completion
 
@@ -313,6 +319,23 @@ The detailed relationships and fields will be documented in the project's ERD.
   
 ## Project Status
 
-**Current Phase:** Sprint 13 — Planning & Architecture
+**Current Phase:** Sprint 14 — Authentication & Routing
 
-**Development Status:** Blueprint / Planning Phase
+**Development Status:** Authentication, Routing, Security Testing and Initial Deployment Completed
+
+### Sprint 14 Completed
+
+- User registration and login
+- Password hashing using bcryptjs
+- JWT-based authentication
+- Protected dashboard route
+- JWT verification middleware
+- Protected task API
+- Logout functionality
+- MongoDB integration
+- Frontend deployed on Vercel
+- Backend deployed on Render
+
+### Next Phase
+
+**Sprint 15 — Full Feature Completion**
