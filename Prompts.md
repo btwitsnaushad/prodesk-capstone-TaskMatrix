@@ -118,3 +118,55 @@ The final decisions were reviewed and adapted specifically for TaskMatrix.
 ## Final Note
 
 AI was used as a planning and review tool, not to generate the complete project. The final architecture, database design, security model, API structure, and feature scope were decided for the TaskMatrix requirements.
+
+---
+
+## 7. Sprint 14 – Authentication & Routing
+
+### Password Hashing
+
+**Question:**  
+How should I hash the password with bcryptjs before saving a new user in MongoDB? I want to make sure the plain password is never stored.
+
+**What I did:**  
+I implemented bcryptjs hashing during registration and checked the saved user in MongoDB to verify that the password was stored as a hash.
+
+---
+
+### JWT Login Flow
+
+**Question:**  
+After the user logs in successfully, what is the proper way to create a JWT and use it for authentication on the frontend?
+
+**What I did:**  
+I added JWT generation in the login and registration flow and stored the returned token in `localStorage` on the React side.
+
+---
+
+### JWT Middleware
+
+**Question:**  
+How can I verify the JWT sent in the Authorization header in Express and stop requests when the token is missing or expired?
+
+**What I did:**  
+I created JWT verification middleware and used it on protected backend routes.
+
+---
+
+### React Protected Route
+
+**Question:**  
+How do I stop someone from opening the dashboard directly when there is no login token?
+
+**What I did:**  
+I created a `PrivateRoute` component that checks `localStorage` and redirects the user to `/login` when the token is not available.
+
+---
+
+### Authentication Debugging
+
+**Question:**  
+My frontend, Express API and MongoDB are connected now. What should I test to make sure registration, login, logout and protected routes are actually working correctly?
+
+**What I did:**  
+I tested wrong passwords, new user registration, login, logout, dashboard protection, JWT storage and the protected task API. I also verified the hashed password directly in MongoDB.
