@@ -44,6 +44,7 @@ The system will focus on:
 * Express.js
 * REST API
 * JWT Authentication
+* bcryptjs
 
 ### Database
 
@@ -339,3 +340,9 @@ The detailed relationships and fields will be documented in the project's ERD.
 ### Next Phase
 
 **Sprint 15 — Full Feature Completion**
+
+## Project Links
+
+- **GitHub Repository:** https://github.com/btwitsnaushad/prodesk-capstone-TaskMatrix
+- **Live Frontend:** https://prodesk-capstone-task-matrix-rosy.vercel.app
+- **Backend API:** https://prodesk-capstone-taskmatrix-23ts.onrender.com
