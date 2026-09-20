@@ -16,6 +16,9 @@ app.use('/api/tasks', require('./routes/task'));
 // Registering the newly created Project routes
 app.use('/api/projects', require('./routes/projectRoutes'));
 
+// Registering Payment route for Stripe Checkout
+app.use('/api/payment', require('./routes/paymentRoutes'));
+
 // Establishing connection to MongoDB Atlas
 mongoose.connect(process.env.MONGO_URI, {
   serverSelectionTimeoutMS: 5000, 

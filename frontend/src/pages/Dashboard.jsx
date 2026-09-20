@@ -5,19 +5,29 @@ import axios from 'axios';
 const Dashboard = () => {
   const navigate = useNavigate();
   
-  // State for user info and tasks
   const [userName] = useState(() => localStorage.getItem('userName') || '');
   const [tasks, setTasks] = useState([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
-  // Retrieve the JWT token securely stored during login
   const token = localStorage.getItem('token');
-  
-  // NOTE: Replace this with your actual Render API URL if testing on production
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
   // ==========================================
-  // 1. FETCH TASKS (Read)
+  // CHECK PAYMENT STATUS ON LOAD
+  // ==========================================
+  useEffect(() => {
+    // Check the URL for Stripe success or cancel messages
+    const query = new URLSearchParams(window.location.search);
+    if (query.get('success')) {
+      alert('Payment successful! 🎉 Welcome to TaskMatrix Pro!');
+    }
+    if (query.get('canceled')) {
+      alert('Payment canceled. You can upgrade anytime!');
+    }
+  }, []);
+
+  // ==========================================
+  // FETCH TASKS
   // ==========================================
   useEffect(() => {
     const fetchTasks = async () => {
@@ -31,13 +41,33 @@ const Dashboard = () => {
       }
     };
 
-    if (token) {
-      fetchTasks();
-    }
+    if (token) fetchTasks();
   }, [token, API_URL]);
 
   // ==========================================
-  // 2. CREATE A NEW TASK (POST)
+  // STRIPE PAYMENT INTEGRATION
+  // ==========================================
+  const handleUpgradeToPro = async () => {
+    try {
+      // 1. Call our secure Node.js backend to create a Stripe checkout session
+      const response = await axios.post(
+        `${API_URL}/api/payment/create-checkout-session`,
+        {}, // No body needed
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      // 2. Redirect the user securely to the Stripe payment page
+      if (response.data.url) {
+        window.location.href = response.data.url;
+      }
+    } catch (error) {
+      console.error('Payment Error:', error);
+      alert('Unable to start payment process. Please try again.');
+    }
+  };
+
+  // ==========================================
+  // CREATE TASK
   // ==========================================
   const handleCreateTask = async (e) => {
     e.preventDefault();
@@ -49,41 +79,31 @@ const Dashboard = () => {
         { title: newTaskTitle },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      
-      // Instantly update the UI by adding the newly created task to the top of the list
       setTasks([response.data.task, ...tasks]);
-      setNewTaskTitle(''); // Clear the input field
+      setNewTaskTitle('');
     } catch (error) {
       console.error('Failed to create task:', error);
     }
   };
 
   // ==========================================
-  // 3. DELETE TASK WITH OPTIMISTIC UI (Delete)
+  // DELETE TASK (OPTIMISTIC UI)
   // ==========================================
   const handleDeleteTask = async (taskId) => {
-    // OPTIMISTIC UI STEP 1: Save the current state in case the API fails
     const previousTasks = [...tasks];
-    
-    // OPTIMISTIC UI STEP 2: Instantly remove the item from the screen for a fast user experience
     setTasks(tasks.filter(task => task._id !== taskId));
 
     try {
-      // OPTIMISTIC UI STEP 3: Execute the database deletion silently in the background
       await axios.delete(`${API_URL}/api/tasks/${taskId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
     } catch (error) {
       console.error('Failed to delete task:', error);
-      // REVERT: If the server fails to delete, put the task back on the screen and alert the user
       setTasks(previousTasks);
       alert('Network error. Failed to delete the task.');
     }
   };
 
-  // ==========================================
-  // LOGOUT
-  // ==========================================
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
@@ -99,10 +119,16 @@ const Dashboard = () => {
             <div className="shrink-0 flex items-center">
               <h1 className="text-2xl font-extrabold text-blue-600">TaskMatrix</h1>
             </div>
-            <div>
+            <div className="flex gap-4">
+              <button
+                onClick={handleUpgradeToPro}
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-sm transition-all"
+              >
+                ⭐ Upgrade to Pro
+              </button>
               <button
                 onClick={handleLogout}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 transition-colors"
+                className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors"
               >
                 Log Out
               </button>
@@ -113,13 +139,13 @@ const Dashboard = () => {
 
       {/* Main Dashboard Content Area */}
       <main className="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-        
-        {/* Header Section */}
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-800">
-            Welcome to your Workspace, {userName ? userName : 'User'}!
-          </h2>
-          <p className="text-gray-600 mt-2">Manage your tasks securely below.</p>
+        <div className="mb-8 flex justify-between items-end">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-800">
+              Welcome to your Workspace, {userName ? userName : 'User'}!
+            </h2>
+            <p className="text-gray-600 mt-2">Manage your tasks securely below.</p>
+          </div>
         </div>
 
         {/* Task Creation Form */}
