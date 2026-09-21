@@ -8,6 +8,10 @@ const Dashboard = () => {
   const [userName] = useState(() => localStorage.getItem('userName') || '');
   const [tasks, setTasks] = useState([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
+  
+  // States for Editing
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [editTaskTitle, setEditTaskTitle] = useState('');
 
   const token = localStorage.getItem('token');
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
@@ -16,7 +20,6 @@ const Dashboard = () => {
   // CHECK PAYMENT STATUS ON LOAD
   // ==========================================
   useEffect(() => {
-    // Check the URL for Stripe success or cancel messages
     const query = new URLSearchParams(window.location.search);
     if (query.get('success')) {
       alert('Payment successful! 🎉 Welcome to TaskMatrix Pro!');
@@ -27,7 +30,7 @@ const Dashboard = () => {
   }, []);
 
   // ==========================================
-  // FETCH TASKS
+  // FETCH TASKS (READ)
   // ==========================================
   useEffect(() => {
     const fetchTasks = async () => {
@@ -49,14 +52,11 @@ const Dashboard = () => {
   // ==========================================
   const handleUpgradeToPro = async () => {
     try {
-      // 1. Call our secure Node.js backend to create a Stripe checkout session
       const response = await axios.post(
         `${API_URL}/api/payment/create-checkout-session`,
-        {}, // No body needed
+        {}, 
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      
-      // 2. Redirect the user securely to the Stripe payment page
       if (response.data.url) {
         window.location.href = response.data.url;
       }
@@ -87,6 +87,39 @@ const Dashboard = () => {
   };
 
   // ==========================================
+  // UPDATE TASK
+  // ==========================================
+  const handleUpdateTask = async (e, taskId) => {
+    e.preventDefault();
+    if (!editTaskTitle.trim()) return;
+
+    try {
+      const response = await axios.put(
+        `${API_URL}/api/tasks/${taskId}`,
+        { title: editTaskTitle },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      // Update the task in the local state array
+      setTasks(tasks.map(task => 
+        task._id === taskId ? { ...task, title: response.data.task.title || editTaskTitle } : task
+      ));
+      
+      // Exit edit mode
+      setEditingTaskId(null);
+      setEditTaskTitle('');
+    } catch (error) {
+      console.error('Failed to update task:', error);
+      alert(error.response?.status === 403 ? "Forbidden: You don't own this task." : 'Failed to update task.');
+    }
+  };
+
+  const startEditing = (task) => {
+    setEditingTaskId(task._id);
+    setEditTaskTitle(task.title);
+  };
+
+  // ==========================================
   // DELETE TASK (OPTIMISTIC UI)
   // ==========================================
   const handleDeleteTask = async (taskId) => {
@@ -100,7 +133,7 @@ const Dashboard = () => {
     } catch (error) {
       console.error('Failed to delete task:', error);
       setTasks(previousTasks);
-      alert('Network error. Failed to delete the task.');
+      alert(error.response?.status === 403 ? "Forbidden: You don't own this task." : 'Network error. Failed to delete the task.');
     }
   };
 
@@ -122,7 +155,7 @@ const Dashboard = () => {
             <div className="flex gap-4">
               <button
                 onClick={handleUpgradeToPro}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-sm transition-all"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-right from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-sm transition-all"
               >
                 ⭐ Upgrade to Pro
               </button>
@@ -178,13 +211,40 @@ const Dashboard = () => {
             <ul className="divide-y divide-gray-200">
               {tasks.map((task) => (
                 <li key={task._id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
-                  <span className="text-gray-800 text-lg font-medium">{task.title}</span>
-                  <button
-                    onClick={() => handleDeleteTask(task._id)}
-                    className="px-4 py-1.5 text-sm font-medium text-red-600 bg-red-100 rounded-md hover:bg-red-200 transition-colors"
-                  >
-                    Delete
-                  </button>
+                  
+                  {/* EDIT MODE */}
+                  {editingTaskId === task._id ? (
+                    <form onSubmit={(e) => handleUpdateTask(e, task._id)} className="flex flex-1 gap-4 mr-4">
+                      <input
+                        type="text"
+                        value={editTaskTitle}
+                        onChange={(e) => setEditTaskTitle(e.target.value)}
+                        className="flex-1 px-3 py-1 border border-blue-400 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        required
+                      />
+                      <button type="submit" className="px-3 py-1 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700">Save</button>
+                      <button type="button" onClick={() => setEditingTaskId(null)} className="px-3 py-1 text-sm font-medium text-gray-600 bg-gray-200 rounded-md hover:bg-gray-300">Cancel</button>
+                    </form>
+                  ) : (
+                    /* NORMAL DISPLAY MODE */
+                    <>
+                      <span className="text-gray-800 text-lg font-medium truncate flex-1">{task.title}</span>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => startEditing(task)}
+                          className="px-4 py-1.5 text-sm font-medium text-blue-600 bg-blue-100 rounded-md hover:bg-blue-200 transition-colors"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDeleteTask(task._id)}
+                          className="px-4 py-1.5 text-sm font-medium text-red-600 bg-red-100 rounded-md hover:bg-red-200 transition-colors"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </li>
               ))}
             </ul>
