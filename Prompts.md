@@ -170,3 +170,37 @@ My frontend, Express API and MongoDB are connected now. What should I test to ma
 
 **What I did:**  
 I tested wrong passwords, new user registration, login, logout, dashboard protection, JWT storage and the protected task API. I also verified the hashed password directly in MongoDB.
+
+---
+
+## 8. Sprint 15 – Task CRUD, Ownership & Stripe
+
+### JWT Data Ownership
+
+**Question:**  
+
+How should I make sure that an authenticated user can only update or delete their own tasks?
+
+**What I did:**  
+
+I added ownership validation by comparing the task owner's ID with the authenticated user's ID from the JWT. If the task belongs to another user, the API returns a `403 Forbidden` response.
+
+### Optimistic Task Deletion
+
+**Question:**  
+
+How can I remove a task from the React UI immediately after clicking Delete while still handling an API failure safely?
+
+**What I did:**  
+
+I removed the task from the local React state immediately after the delete action. If the API request fails, the previous task list is restored.
+
+### Stripe Checkout Integration
+
+**Question:**  
+
+How should I connect a React upgrade button with a backend Stripe Checkout Session and handle successful or canceled payments?
+
+**What I did:**  
+
+I implemented the Stripe Checkout flow through the backend, redirected the user to the Stripe Checkout page, and tested both successful and canceled payment scenarios using Test Mode.
