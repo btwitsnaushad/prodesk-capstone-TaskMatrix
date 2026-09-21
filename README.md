@@ -163,9 +163,9 @@ Relationships between these collections will be documented through the Entity Re
 
 ### Authentication
 
-* `POST /api/auth/register`
-* `POST /api/auth/login`
-* `GET /api/auth/me`
+
+* POST /api/auth/register
+* POST /api/auth/login
 
 ### Users
 
@@ -182,13 +182,13 @@ Relationships between these collections will be documented through the Entity Re
 * `PUT /api/projects/:id`
 * `DELETE /api/projects/:id`
 
+
 ### Tasks
 
-* `GET /api/projects/:projectId/tasks`
-* `POST /api/projects/:projectId/tasks`
-* `GET /api/tasks/:id`
-* `PUT /api/tasks/:id`
-* `DELETE /api/tasks/:id`
+* GET /api/tasks
+* POST /api/tasks
+* PUT /api/tasks/:id
+* DELETE /api/tasks/:id
 
 ### Comments
 
@@ -289,12 +289,15 @@ The detailed relationships and fields will be documented in the project's ERD.
 
 ### Sprint 15 — Full Feature Completion
 
-* Complete CRUD operations
-* Role-based access control
-* Comments
-* Activity feed
-* Search and filtering
-* Team management
+* Task CRUD operations
+* Create, read, update and delete tasks
+* JWT-protected task APIs
+* User-specific task ownership validation
+* Unauthorized access handling with 403 responses
+* React frontend and REST API integration
+* Optimistic task deletion
+* Stripe Checkout integration in Test Mode
+* Stripe payment success and cancellation handling
 
 ### Sprint 16 — AI Integration & UX Polish
 
@@ -320,26 +323,40 @@ The detailed relationships and fields will be documented in the project's ERD.
   
 ## Project Status
 
-**Current Phase:** Sprint 14 — Authentication & Routing
+**Current Phase:** Sprint 15 — Full Feature Completion
 
-**Development Status:** Authentication, Routing, Security Testing and Initial Deployment Completed
+**Development Status:** Authentication, Task CRUD, Data Ownership, REST API Integration and Stripe Checkout Testing Completed
 
 ### Sprint 14 Completed
 
-- User registration and login
-- Password hashing using bcryptjs
-- JWT-based authentication
-- Protected dashboard route
-- JWT verification middleware
-- Protected task API
-- Logout functionality
-- MongoDB integration
-- Frontend deployed on Vercel
-- Backend deployed on Render
+* User registration and login
+* Password hashing using bcryptjs
+* JWT-based authentication
+* Protected dashboard route
+* JWT verification middleware
+* Protected task API
+* Logout functionality
+* MongoDB integration
+* Frontend deployed on Vercel
+* Backend deployed on Render
+
+### Sprint 15 Completed
+
+* Task creation using REST API
+* Task retrieval for authenticated users
+* Task update functionality
+* Task deletion functionality
+* JWT-protected task routes
+* User-specific task ownership validation
+* 403 handling for unauthorized task access
+* React frontend and backend API integration
+* Optimistic UI update for task deletion
+* Stripe Checkout Test Mode integration
+* Stripe success and cancellation flow
 
 ### Next Phase
 
-**Sprint 15 — Full Feature Completion**
+**Sprint 16 — AI Integration & UX Polish**
 
 ## Project Links
 
