@@ -9,7 +9,7 @@ const Dashboard = () => {
   const [tasks, setTasks] = useState([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
   
-  // States for Editing
+  // States for Editing Mode
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editTaskTitle, setEditTaskTitle] = useState('');
 
