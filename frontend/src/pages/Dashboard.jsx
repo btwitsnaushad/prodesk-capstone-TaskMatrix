@@ -155,7 +155,7 @@ const Dashboard = () => {
             <div className="flex gap-4">
               <button
                 onClick={handleUpgradeToPro}
-                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-right from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-sm transition-all"
+                className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 font-bold shadow-md transition-colors"
               >
                 ⭐ Upgrade to Pro
               </button>
