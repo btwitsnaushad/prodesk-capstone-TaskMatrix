@@ -1,7 +1,8 @@
+require('dotenv').config(); 
+const aiRoutes = require('./routes/aiRoutes');
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-require('dotenv').config();
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 // Registering authentication and task API routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/tasks', require('./routes/task'));
+app.use('/api/ai', aiRoutes);
 
 // Registering the newly created Project routes
 app.use('/api/projects', require('./routes/projectRoutes'));

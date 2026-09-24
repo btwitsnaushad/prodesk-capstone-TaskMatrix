@@ -1,21 +1,19 @@
 const express = require('express');
 const Task = require('../models/Task');
-const authMiddleware = require('../middleware/authMiddleware'); // Bringing in our security guard
+const authMiddleware = require('../middleware/authMiddleware'); // Security guard for JWT
+const { validateTask } = require('../middleware/validate'); // Payload validation guard (Sprint 16)
 
 const router = express.Router();
 
 // ==========================================
 // ROUTE: POST /api/tasks
 // ==========================================
-router.post('/', authMiddleware, async (req, res) => {
+// Injecting validateTask to strictly validate incoming payloads before database interaction
+router.post('/', authMiddleware, validateTask, async (req, res) => {
   try {
     const { title, description, dueDate } = req.body;
 
-    if (!title) {
-      return res.status(400).json({ error: 'Please provide a title for your task.' });
-    }
-
-    // FIX: Using req.user.userId instead of just req.user to pass only the ID string
+    // Using req.user.userId instead of just req.user to pass only the ID string
     const newTask = new Task({
       user: req.user.userId, 
       title,
@@ -41,7 +39,7 @@ router.post('/', authMiddleware, async (req, res) => {
 // ==========================================
 router.get('/', authMiddleware, async (req, res) => {
   try {
-    // FIX: Match against req.user.userId
+    // Match against req.user.userId
     const tasks = await Task.find({ user: req.user.userId }).sort({ createdAt: -1 });
     
     res.status(200).json({
@@ -57,7 +55,8 @@ router.get('/', authMiddleware, async (req, res) => {
 // ==========================================
 // ROUTE: PUT /api/tasks/:id
 // ==========================================
-router.put('/:id', authMiddleware, async (req, res) => {
+// Injecting validateTask to ensure update payloads conform to our strict schema
+router.put('/:id', authMiddleware, validateTask, async (req, res) => {
   try {
     const { title, description, status, dueDate } = req.body;
 
@@ -67,7 +66,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
       return res.status(404).json({ error: 'Task not found.' });
     }
 
-    // FIX: Compare task.user with req.user.userId
+    // Compare task.user with req.user.userId
     if (task.user.toString() !== req.user.userId) {
       return res.status(403).json({ error: 'Access denied. You do not own this task.' });
     }
@@ -85,6 +84,11 @@ router.put('/:id', authMiddleware, async (req, res) => {
     });
 
   } catch (error) {
+    // Intercept invalid MongoDB ObjectId formats to prevent fatal server crashes [Sprint 16 Requirement]
+    if (error.name === 'CastError') {
+      return res.status(400).json({ error: 'Invalid Task ID format provided.' });
+    }
+
     console.error('Update Task Error:', error.message);
     res.status(500).json({ error: 'Our servers experienced an issue while updating the task.' });
   }
@@ -101,7 +105,7 @@ router.delete('/:id', authMiddleware, async (req, res) => {
       return res.status(404).json({ error: 'Task not found.' });
     }
 
-    // FIX: Compare task.user with req.user.userId
+    // Compare task.user with req.user.userId
     if (task.user.toString() !== req.user.userId) {
       return res.status(403).json({ error: 'Access denied. You do not own this task.' });
     }
@@ -111,6 +115,11 @@ router.delete('/:id', authMiddleware, async (req, res) => {
     res.status(200).json({ message: 'Task deleted successfully.' });
 
   } catch (error) {
+    // Intercept invalid MongoDB ObjectId formats to prevent fatal server crashes [Sprint 16 Requirement]
+    if (error.name === 'CastError') {
+      return res.status(400).json({ error: 'Invalid Task ID format provided.' });
+    }
+
     console.error('Delete Task Error:', error.message);
     res.status(500).json({ error: 'Our servers experienced an issue while deleting the task.' });
   }
