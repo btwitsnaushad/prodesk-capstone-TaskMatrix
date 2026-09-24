@@ -9,6 +9,10 @@ const Dashboard = () => {
   const [tasks, setTasks] = useState([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
   
+  // ✨ NEW: States for AI Suggestions
+  const [subtasks, setSubtasks] = useState([]);
+  const [isAILoading, setIsAILoading] = useState(false);
+  
   // States for Editing Mode
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editTaskTitle, setEditTaskTitle] = useState('');
@@ -67,6 +71,33 @@ const Dashboard = () => {
   };
 
   // ==========================================
+  // ✨ NEW: AI SUGGEST SUBTASKS
+  // ==========================================
+  const handleAISuggest = async () => {
+    if (!newTaskTitle.trim()) {
+      alert("Please enter a task title first!");
+      return;
+    }
+
+    setIsAILoading(true);
+    setSubtasks([]); // Clear previous suggestions
+
+    try {
+      const response = await axios.post(
+        `${API_URL}/api/ai/suggest`,
+        { taskTitle: newTaskTitle },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setSubtasks(response.data.subtasks);
+    } catch (error) {
+      console.error('Failed to get AI suggestions:', error);
+      alert('AI service is currently unavailable.');
+    } finally {
+      setIsAILoading(false);
+    }
+  };
+
+  // ==========================================
   // CREATE TASK
   // ==========================================
   const handleCreateTask = async (e) => {
@@ -81,6 +112,7 @@ const Dashboard = () => {
       );
       setTasks([response.data.task, ...tasks]);
       setNewTaskTitle('');
+      setSubtasks([]); // ✨ Clear AI suggestions after task is created
     } catch (error) {
       console.error('Failed to create task:', error);
     }
@@ -100,12 +132,10 @@ const Dashboard = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       
-      // Update the task in the local state array
       setTasks(tasks.map(task => 
         task._id === taskId ? { ...task, title: response.data.task.title || editTaskTitle } : task
       ));
       
-      // Exit edit mode
       setEditingTaskId(null);
       setEditTaskTitle('');
     } catch (error) {
@@ -145,7 +175,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Top Navigation Bar */}
       <nav className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
@@ -170,7 +199,6 @@ const Dashboard = () => {
         </div>
       </nav>
 
-      {/* Main Dashboard Content Area */}
       <main className="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <div className="mb-8 flex justify-between items-end">
           <div>
@@ -192,6 +220,15 @@ const Dashboard = () => {
               className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
+            {/* ✨ NEW: AI Suggest Button */}
+            <button
+              type="button"
+              onClick={handleAISuggest}
+              disabled={isAILoading}
+              className="px-4 py-2 bg-purple-600 text-white font-medium rounded-md hover:bg-purple-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+            >
+              {isAILoading ? "✨ Thinking..." : "✨ AI Suggest"}
+            </button>
             <button
               type="submit"
               className="px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 transition-colors"
@@ -199,6 +236,18 @@ const Dashboard = () => {
               Add Task
             </button>
           </form>
+
+          {/* ✨ NEW: AI Results Display */}
+          {subtasks.length > 0 && (
+            <div className="mt-4 p-4 bg-purple-50 border border-purple-200 rounded-md animate-fade-in-down">
+              <h4 className="font-bold mb-2 text-purple-800">✨ AI Suggested Subtasks:</h4>
+              <ul className="list-disc pl-5 space-y-1 text-purple-700">
+                {subtasks.map((step, index) => (
+                  <li key={index}>{step}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
         {/* Tasks List */}
@@ -212,7 +261,6 @@ const Dashboard = () => {
               {tasks.map((task) => (
                 <li key={task._id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
                   
-                  {/* EDIT MODE */}
                   {editingTaskId === task._id ? (
                     <form onSubmit={(e) => handleUpdateTask(e, task._id)} className="flex flex-1 gap-4 mr-4">
                       <input
@@ -226,7 +274,6 @@ const Dashboard = () => {
                       <button type="button" onClick={() => setEditingTaskId(null)} className="px-3 py-1 text-sm font-medium text-gray-600 bg-gray-200 rounded-md hover:bg-gray-300">Cancel</button>
                     </form>
                   ) : (
-                    /* NORMAL DISPLAY MODE */
                     <>
                       <span className="text-gray-800 text-lg font-medium truncate flex-1">{task.title}</span>
                       <div className="flex gap-2">
