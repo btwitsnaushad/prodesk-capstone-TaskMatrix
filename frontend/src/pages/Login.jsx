@@ -25,7 +25,6 @@ const Login = () => {
         password
       });
       
-      console.log("Authentication successful:", response.data.message);
       
       // Securely store the JWT session token in the browser's local storage
       // This token will be attached to future requests to prove the user is logged in
@@ -41,7 +40,7 @@ const Login = () => {
       // Extract specific backend validation errors (e.g., "Invalid email or password")
       const errorMsg = error.response?.data?.error || "Failed to connect to the server. Please try again.";
       setServerError(errorMsg);
-      console.error("Authentication rejected:", errorMsg);
+      // removed console.log for production sanitization
     } finally {
       // Unlock the form regardless of the network outcome
       setIsSubmitting(false);

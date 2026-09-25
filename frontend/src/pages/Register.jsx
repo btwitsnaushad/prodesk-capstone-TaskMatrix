@@ -42,9 +42,7 @@ const Register = () => {
       };
 
       // NEW URL: Transmit the mapped payload to the live Render authentication endpoint
-      const response = await axios.post('https://prodesk-capstone-taskmatrix-23ts.onrender.com/api/auth/register', apiPayload);
-      
-      console.log("Registration successful:", response.data);
+      await axios.post('https://prodesk-capstone-taskmatrix-23ts.onrender.com/api/auth/register', apiPayload);
       
       // Route the user to the login view upon successful account creation
       navigate('/login');
@@ -55,7 +53,7 @@ const Register = () => {
       const errorMsg = backendError || "Failed to process registration. Please verify your details and try again.";
       
       setServerError(errorMsg);
-      console.error("Registration payload rejected:", error.response?.data || error.message);
+      // removed console.error for strict production sanitization
     } finally {
       // Ensure the form unlocks regardless of success or failure
       setIsSubmitting(false);
