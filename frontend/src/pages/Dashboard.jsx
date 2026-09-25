@@ -9,11 +9,11 @@ const Dashboard = () => {
   const [tasks, setTasks] = useState([]);
   const [newTaskTitle, setNewTaskTitle] = useState('');
   
-  // ✨ NEW: States for AI Suggestions
+  // AI Suggestions States
   const [subtasks, setSubtasks] = useState([]);
   const [isAILoading, setIsAILoading] = useState(false);
   
-  // States for Editing Mode
+  // Editing Mode States
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [editTaskTitle, setEditTaskTitle] = useState('');
 
@@ -71,7 +71,7 @@ const Dashboard = () => {
   };
 
   // ==========================================
-  // ✨ NEW: AI SUGGEST SUBTASKS
+  // GET AI SUBTASK SUGGESTIONS
   // ==========================================
   const handleAISuggest = async () => {
     if (!newTaskTitle.trim()) {
@@ -98,7 +98,27 @@ const Dashboard = () => {
   };
 
   // ==========================================
-  // CREATE TASK
+  // ADD INDIVIDUAL AI SUBTASK TO MAIN LIST
+  // ==========================================
+  const handleAddSubtask = async (subtaskText) => {
+    try {
+      const response = await axios.post(
+        `${API_URL}/api/tasks`,
+        { title: subtaskText },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      // Add the new task to the top of the main task list
+      setTasks([response.data.task, ...tasks]);
+      // Remove the added task from the AI suggestions list
+      setSubtasks(subtasks.filter(step => step !== subtaskText));
+    } catch (error) {
+      console.error('Failed to add subtask:', error);
+      alert('Failed to add subtask.');
+    }
+  };
+
+  // ==========================================
+  // CREATE NEW MANUAL TASK
   // ==========================================
   const handleCreateTask = async (e) => {
     e.preventDefault();
@@ -112,14 +132,14 @@ const Dashboard = () => {
       );
       setTasks([response.data.task, ...tasks]);
       setNewTaskTitle('');
-      setSubtasks([]); // ✨ Clear AI suggestions after task is created
+      setSubtasks([]); // Clear AI suggestions after task is created
     } catch (error) {
       console.error('Failed to create task:', error);
     }
   };
 
   // ==========================================
-  // UPDATE TASK
+  // UPDATE EXISTING TASK
   // ==========================================
   const handleUpdateTask = async (e, taskId) => {
     e.preventDefault();
@@ -167,6 +187,9 @@ const Dashboard = () => {
     }
   };
 
+  // ==========================================
+  // USER LOGOUT
+  // ==========================================
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
@@ -175,6 +198,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Navigation Bar */}
       <nav className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
@@ -199,6 +223,7 @@ const Dashboard = () => {
         </div>
       </nav>
 
+      {/* Main Content Area */}
       <main className="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <div className="mb-8 flex justify-between items-end">
           <div>
@@ -220,7 +245,7 @@ const Dashboard = () => {
               className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
-            {/* ✨ NEW: AI Suggest Button */}
+            {/* AI Suggest Button */}
             <button
               type="button"
               onClick={handleAISuggest}
@@ -237,13 +262,22 @@ const Dashboard = () => {
             </button>
           </form>
 
-          {/* ✨ NEW: AI Results Display */}
+          {/* Actionable AI Results Display */}
           {subtasks.length > 0 && (
             <div className="mt-4 p-4 bg-purple-50 border border-purple-200 rounded-md animate-fade-in-down">
-              <h4 className="font-bold mb-2 text-purple-800">✨ AI Suggested Subtasks:</h4>
-              <ul className="list-disc pl-5 space-y-1 text-purple-700">
+              <h4 className="font-bold mb-3 text-purple-800">✨ AI Suggested Subtasks:</h4>
+              <ul className="space-y-2 text-purple-800">
                 {subtasks.map((step, index) => (
-                  <li key={index}>{step}</li>
+                  <li key={index} className="flex justify-between items-start bg-white p-3 rounded-md shadow-sm border border-purple-100">
+                    <span className="flex-1 text-sm mt-0.5">{step}</span>
+                    <button
+                      type="button"
+                      onClick={() => handleAddSubtask(step)}
+                      className="ml-4 px-3 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded hover:bg-purple-200 transition-colors shrink-0 shadow-sm"
+                    >
+                      + Add
+                    </button>
+                  </li>
                 ))}
               </ul>
             </div>
