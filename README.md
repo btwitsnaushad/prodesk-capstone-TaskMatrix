@@ -45,6 +45,14 @@ The system will focus on:
 * REST API
 * JWT Authentication
 * bcryptjs
+* Zod
+* express-rate-limit
+* Stripe
+
+### AI Integration
+
+* Google Gemini API
+* Gemini 2.5 Flash
 
 ### Database
 
@@ -144,7 +152,6 @@ The system will focus on:
 
 * Real-time task updates
 * Notifications
-* AI-powered project assistance
 * Advanced analytics
 
 ## Database Collections
@@ -301,10 +308,18 @@ The detailed relationships and fields will be documented in the project's ERD.
 
 ### Sprint 16 — AI Integration & UX Polish
 
-* AI-powered functionality
-* UX improvements
-* Performance improvements
-* Additional collaboration features
+
+* Gemini AI integration
+* AI-powered task subtask suggestions
+* Protected AI suggestion API
+* Structured JSON AI responses
+* Zod request validation
+* Invalid request handling with 400 responses
+* Rate limiting for authentication and AI routes
+* AI-generated subtasks displayed in the dashboard
+* Add AI-generated subtasks as tasks
+* Mobile responsive dashboard testing
+* Production console.log cleanup
 
 ### Sprint 17 — Deployment & Go-Live
 
@@ -323,9 +338,9 @@ The detailed relationships and fields will be documented in the project's ERD.
   
 ## Project Status
 
-**Current Phase:** Sprint 15 — Full Feature Completion
+**Current Phase:** Sprint 16 — AI Integration & UX Polish
 
-**Development Status:** Authentication, Task CRUD, Data Ownership, REST API Integration and Stripe Checkout Testing Completed
+**Development Status:** Authentication, Task CRUD, Data Ownership, Stripe Checkout, AI Integration, Request Validation, Rate Limiting and Mobile Responsiveness Completed
 
 ### Sprint 14 Completed
 
@@ -354,9 +369,24 @@ The detailed relationships and fields will be documented in the project's ERD.
 * Stripe Checkout Test Mode integration
 * Stripe success and cancellation flow
 
+
+### Sprint 16 Completed
+
+* Gemini AI integration
+* AI-powered task subtask generation
+* Protected AI suggestion API
+* Structured JSON AI responses
+* Zod request validation
+* Invalid payload handling with 400 responses
+* Rate limiting for authentication and AI routes
+* AI-generated subtasks displayed in dashboard
+* Add AI-generated subtasks as tasks
+* Mobile responsiveness testing
+* Production console.log cleanup
+
 ### Next Phase
 
-**Sprint 16 — AI Integration & UX Polish**
+**Sprint 17 — Deployment & Go-Live**
 
 ## Project Links
 

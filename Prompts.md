@@ -204,3 +204,53 @@ How should I connect a React upgrade button with a backend Stripe Checkout Sessi
 **What I did:**  
 
 I implemented the Stripe Checkout flow through the backend, redirected the user to the Stripe Checkout page, and tested both successful and canceled payment scenarios using Test Mode.
+
+---
+
+## 9. Sprint 16 – AI Integration & Production Improvements
+
+### Gemini AI Integration
+
+**Question:**  
+
+How can I integrate Gemini AI into my Express backend to generate useful subtasks while keeping the API key secure?
+
+**What I did:**  
+
+I integrated the Gemini API through a protected backend endpoint and stored the API key securely in environment variables instead of exposing it in the frontend.
+
+---
+
+### AI Response & Request Validation
+
+**Question:**  
+
+How can I make the AI return a predictable JSON response and validate the task input before sending it to the AI service?
+
+**What I did:**  
+
+I configured the AI response to return structured JSON containing subtasks and added Zod validation to reject invalid requests with a `400 Bad Request` response.
+
+---
+
+### API Rate Limiting
+
+**Question:**  
+
+How can I prevent excessive requests to sensitive authentication and AI endpoints?
+
+**What I did:**  
+
+I added `express-rate-limit` and applied rate limiting to the authentication and AI routes to control excessive requests.
+
+---
+
+### AI Feature Integration & Production Testing
+
+**Question:**  
+
+How can I integrate the AI-generated subtasks into the dashboard and make sure the feature works correctly in production?
+
+**What I did:**  
+
+I connected the AI suggestions with the React dashboard, added the option to create subtasks as normal tasks, tested the feature on mobile view, and removed unnecessary `console.log()` statements before deployment.
