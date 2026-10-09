@@ -222,13 +222,13 @@ Core UI/UX screens:
 2. Mobile Dashboard
 3. Mobile Kanban Board
    
-**Figma Design:** TaskMatrix UI/UX Design https://www.figma.com/design/6GIvTyNg9kbxWm90EdLDr3/TaskMatrix-UI-UX-Design?node-id=0-1&t=V909lnRUAxJcbzSV-1
+**Figma Design:** [TaskMatrix UI/UX Design](https://www.figma.com/design/6GIvTyNg9kbxWm90EdLDr3/TaskMatrix-UI-UX-Design?node-id=0-1&t=V909lnRUAxJcbzSV-1)
 
 ## System Architecture
 
 ### Architecture Diagram
 
-![TaskMatrix System Architecture](TaskMatrix-Architecture.png)
+![TaskMatrix System Architecture](./TaskMatrix-Architecture.png)
 
 TaskMatrix will follow a client-server architecture:
 
